@@ -1,13 +1,12 @@
 import time
-from utils import filter_by_key
 from flask import Flask, request, Response
 from _datetime import datetime
 
 app = Flask(__name__)
 
 messages = [
-    {'name': 'Mary', 'time': time.time(), 'text': 'Hello ! '},
-    {'name': 'Jhon', 'time': time.time(), 'text': 'Hello , Mary! '}
+    # {'name': 'Mary', 'time': time.time(), 'text': 'Hello ! '},
+    # {'name': 'Jhon', 'time': time.time(), 'text': 'Hello , Mary! '}
 ]
 
 
@@ -20,6 +19,16 @@ def send():
     message = {'name': name, 'time': time.time(), 'text': text}
     messages.append(message)
     return Response(status=200)
+
+
+def filter_by_key(elements, key, threshold):
+    filtered_elements = []
+
+    for element in elements:
+        if element[key] > threshold:
+            filtered_elements.append(element)
+
+    return filtered_elements
 
 
 @app.route("/messages")
@@ -44,7 +53,7 @@ def status():
         'status': True,
         'name': 'Easy messenger',
         'time': datetime.now(),
-        'online': len(set(p['name'] for p in messages))
+        'online': len(set(c['name'] for c in messages))
     }
 
 
